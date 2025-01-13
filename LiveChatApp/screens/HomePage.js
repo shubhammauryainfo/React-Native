@@ -21,7 +21,7 @@ const HomePage = () => {
 
       {/* Hero Section */}
       <View style={styles.heroSection}>
-        <Text style={styles.heroTitle}>Welcome to Live Chat!</Text>
+        <Text style={styles.heroTitle}>Welcome to Live Chat APP!</Text>
         <Text style={styles.heroSubtitle}>Connect with friends and colleagues in real-time</Text>
         <Button
           title="Go to Chat"
@@ -33,9 +33,7 @@ const HomePage = () => {
       {/* Bottom Menu */}
       <View style={styles.bottomMenu}>
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
-          <View style={{ backgroundColor: 'white', padding: 10 }}>
             <Icon name="home" size={30} color="white"  />
-          </View>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Chat')}>
           <Icon name="wechat" size={30} color="white"  />
