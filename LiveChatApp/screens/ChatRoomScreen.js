@@ -14,7 +14,7 @@ export default function ChatRoomScreen({ route }) {
       <View style={styles.content}>
         <Text style={styles.title}>Welcome to</Text>
         <Text style={styles.roomName}>{roomName}</Text>
-        <Text style={styles.subtitle}>Start chatting with your friends!</Text>
+        <Text style={styles.subtitle}>Start chatting with your friends! By NEXBYTES</Text>
       </View>
     </LinearGradient>
   );

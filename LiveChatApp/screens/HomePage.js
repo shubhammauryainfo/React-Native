@@ -78,7 +78,7 @@ const HomePage = () => {
 
         {/* Feedback Form */}
         <View style={styles.feedbackSection}>
-          <Text style={styles.sectionTitle}>We'd Love Your Feedback!</Text>
+          <Text style={styles.sectionTitle}>We'd Love Your Comments!</Text>
           <TextInput
             style={styles.feedbackInput}
             placeholder="Your feedback..."
