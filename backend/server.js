@@ -11,7 +11,7 @@ const app = express();
 const apiKeys = [process.env.API_KEY];
 
 const apiKeyMiddleware = (req, res, next) => {
-  const apiKey = req.headers["api-key"]; // Get API key from request headers
+  const apiKey = req.headers["api-key"]; // Get API key from request headers api key Shubham Maurya
 
   if (!apiKey || !apiKeys.includes(apiKey)) {
     return res.status(403).json({
