@@ -8,6 +8,12 @@
     |-- routes
     |-- server.js
 |-- frontend
+    |-- .expo
+        |-- devices.json
+        |-- README.md
+        |-- types
+            |-- router.d.ts
+        |-- web
     |-- .gitignore
     |-- app
         |-- (tabs)
@@ -29,6 +35,7 @@
             |-- react-logo@2x.png
             |-- react-logo@3x.png
             |-- splash-icon.png
+    |-- bun.lock
     |-- components
         |-- Collapsible.tsx
         |-- ExternalLink.tsx
@@ -48,10 +55,12 @@
                 |-- ThemedText-test.tsx.snap
     |-- constants
         |-- Colors.ts
+    |-- expo-env.d.ts
     |-- hooks
         |-- useColorScheme.ts
         |-- useColorScheme.web.ts
         |-- useThemeColor.ts
+    |-- package-lock.json
     |-- package.json
     |-- README.md
     |-- scripts
