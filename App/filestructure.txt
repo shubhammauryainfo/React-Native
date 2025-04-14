@@ -3,12 +3,12 @@
     |-- README.md
     |-- types
         |-- router.d.ts
+    |-- web
 |-- .gitignore
 |-- app
     |-- (tabs)
-        |-- explore.tsx
-        |-- greeting.tsx
         |-- index.tsx
+        |-- players.tsx
         |-- _layout.tsx
     |-- +not-found.tsx
     |-- _layout.tsx
