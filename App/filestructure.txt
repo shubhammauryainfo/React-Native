@@ -29,7 +29,6 @@
     |-- Collapsible.tsx
     |-- ExternalLink.tsx
     |-- HapticTab.tsx
-    |-- HelloWave.tsx
     |-- ParallaxScrollView.tsx
     |-- ThemedText.tsx
     |-- ThemedView.tsx
