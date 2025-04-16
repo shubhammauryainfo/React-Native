@@ -89,6 +89,7 @@ export default function TeamsScreen() {
   };
 
   const selectedTeam = teams.find((team) => team.id === selectedTeamId);
+  const players = selectedTeam?.players ?? [];
 
   const handleAddOrUpdatePlayer = () => {
     if (!playerName || !playerNumber || !playerId) {
@@ -98,12 +99,12 @@ export default function TeamsScreen() {
     if (!selectedTeam) return;
 
     const updatedPlayers = editingPlayerId
-      ? selectedTeam.players.map((p) =>
+      ? players.map((p) =>
           p.id === editingPlayerId
             ? { id: playerId, name: playerName, number: playerNumber }
             : p
         )
-      : [...selectedTeam.players, { id: playerId, name: playerName, number: playerNumber }];
+      : [...players, { id: playerId, name: playerName, number: playerNumber }];
 
     setTeams((prev) =>
       prev.map((team) =>
@@ -130,7 +131,7 @@ export default function TeamsScreen() {
         text: 'Delete',
         style: 'destructive',
         onPress: () => {
-          const updated = selectedTeam.players.filter((p) => p.id !== id);
+          const updated = players.filter((p) => p.id !== id);
           setTeams((prev) =>
             prev.map((team) =>
               team.id === selectedTeam.id ? { ...team, players: updated } : team
@@ -172,7 +173,7 @@ export default function TeamsScreen() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#f9fafb', padding: 20 }}>
       <FlatList
-        data={selectedTeam?.players ?? []}
+        data={players}
         keyExtractor={(item) => item.id}
         renderItem={renderPlayerRow}
         ListHeaderComponent={
@@ -313,7 +314,7 @@ export default function TeamsScreen() {
             )}
 
             {/* Table Header */}
-            {selectedTeam?.players.length > 0 && (
+            {players.length > 0 && (
               <View style={{ flexDirection: 'row', marginBottom: 8, borderBottomWidth: 1, borderColor: '#d1d5db', paddingBottom: 6 }}>
                 <Text style={{ flex: 1, fontWeight: 'bold', color: '#374151' }}>Name</Text>
                 <Text style={{ flex: 1, fontWeight: 'bold', color: '#374151' }}>Number</Text>
