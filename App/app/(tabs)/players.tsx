@@ -5,7 +5,6 @@ import {
   TextInput,
   TouchableOpacity,
   View,
-  ScrollView,
   Alert,
   FlatList,
 } from 'react-native';
@@ -53,14 +52,12 @@ export default function TeamsScreen() {
     }
 
     if (editingTeamId) {
-      // Update team
-      setTeams((prevTeams) =>
-        prevTeams.map((team) =>
+      setTeams((prev) =>
+        prev.map((team) =>
           team.id === editingTeamId ? { ...team, name: teamNameInput } : team
         )
       );
     } else {
-      // Create team
       const newTeam: Team = {
         id: Date.now().toString(),
         name: teamNameInput,
@@ -74,13 +71,13 @@ export default function TeamsScreen() {
   };
 
   const handleDeleteTeam = (teamId: string) => {
-    Alert.alert('Delete Team', 'Are you sure you want to delete this team?', [
+    Alert.alert('Delete Team', 'Are you sure?', [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Delete',
         style: 'destructive',
         onPress: () => {
-          setTeams((prevTeams) => prevTeams.filter((team) => team.id !== teamId));
+          setTeams((prev) => prev.filter((t) => t.id !== teamId));
           if (selectedTeamId === teamId) {
             setSelectedTeamId(null);
             resetPlayerForm();
@@ -94,29 +91,22 @@ export default function TeamsScreen() {
   const selectedTeam = teams.find((team) => team.id === selectedTeamId);
 
   const handleAddOrUpdatePlayer = () => {
-    if (!playerName.trim() || !playerNumber.trim() || !playerId.trim()) {
-      alert('Please fill all player fields');
+    if (!playerName || !playerNumber || !playerId) {
+      alert('Fill all player fields');
       return;
     }
-
-    if (!selectedTeam) {
-      alert('Please select a team first');
-      return;
-    }
+    if (!selectedTeam) return;
 
     const updatedPlayers = editingPlayerId
-      ? selectedTeam.players.map((player) =>
-          player.id === editingPlayerId
+      ? selectedTeam.players.map((p) =>
+          p.id === editingPlayerId
             ? { id: playerId, name: playerName, number: playerNumber }
-            : player
+            : p
         )
-      : [
-          ...selectedTeam.players,
-          { id: playerId, name: playerName, number: playerNumber },
-        ];
+      : [...selectedTeam.players, { id: playerId, name: playerName, number: playerNumber }];
 
-    setTeams((prevTeams) =>
-      prevTeams.map((team) =>
+    setTeams((prev) =>
+      prev.map((team) =>
         team.id === selectedTeam.id ? { ...team, players: updatedPlayers } : team
       )
     );
@@ -131,7 +121,7 @@ export default function TeamsScreen() {
     setEditingPlayerId(player.id);
   };
 
-  const handleDeletePlayer = (playerIdToDelete: string) => {
+  const handleDeletePlayer = (id: string) => {
     if (!selectedTeam) return;
 
     Alert.alert('Delete Player', 'Are you sure?', [
@@ -140,12 +130,10 @@ export default function TeamsScreen() {
         text: 'Delete',
         style: 'destructive',
         onPress: () => {
-          const updatedPlayers = selectedTeam.players.filter(
-            (player) => player.id !== playerIdToDelete
-          );
-          setTeams((prevTeams) =>
-            prevTeams.map((team) =>
-              team.id === selectedTeam.id ? { ...team, players: updatedPlayers } : team
+          const updated = selectedTeam.players.filter((p) => p.id !== id);
+          setTeams((prev) =>
+            prev.map((team) =>
+              team.id === selectedTeam.id ? { ...team, players: updated } : team
             )
           );
           resetPlayerForm();
@@ -160,37 +148,22 @@ export default function TeamsScreen() {
   };
 
   const renderPlayerRow = ({ item }: { item: Player }) => (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginBottom: 8,
-      }}
-    >
+    <View style={{ flexDirection: 'row', marginBottom: 8, alignItems: 'center' }}>
       <Text style={{ flex: 1, color: '#374151' }}>{item.name}</Text>
       <Text style={{ flex: 1, color: '#374151' }}>{item.number}</Text>
       <Text style={{ flex: 1, color: '#374151' }}>{item.id}</Text>
-      <View style={{ width: 80, flexDirection: 'row' }}>
+      <View style={{ flexDirection: 'row', width: 80 }}>
         <TouchableOpacity
           onPress={() => handleEditPlayer(item)}
-          style={{
-            backgroundColor: '#10b981',
-            padding: 4,
-            borderRadius: 4,
-            marginRight: 4,
-          }}
+          style={{ backgroundColor: '#10b981', padding: 6, borderRadius: 4, marginRight: 4 }}
         >
           <Text style={{ color: '#fff', fontSize: 12 }}>Edit</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => handleDeletePlayer(item.id)}
-          style={{
-            backgroundColor: '#ef4444',
-            padding: 4,
-            borderRadius: 4,
-          }}
+          style={{ backgroundColor: '#ef4444', padding: 6, borderRadius: 4 }}
         >
-          <Text style={{ color: '#fff', fontSize: 12 }}>Delete</Text>
+          <Text style={{ color: '#fff', fontSize: 12 }}>Del</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -198,150 +171,21 @@ export default function TeamsScreen() {
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#f9fafb', padding: 20 }}>
-      <ScrollView contentContainerStyle={{ paddingBottom: 50 }}>
-        {/* Team Creation / Editing */}
-        <View
-          style={{
-            marginBottom: 24,
-            backgroundColor: '#ffffff',
-            padding: 20,
-            borderRadius: 12,
-            shadowColor: '#000',
-            shadowOpacity: 0.1,
-            shadowRadius: 10,
-            shadowOffset: { width: 0, height: 5 },
-            elevation: 5,
-          }}
-        >
-          <Text style={{ fontSize: 22, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
-            {editingTeamId ? 'Edit Team Name' : 'Create New Team 🏆'}
-          </Text>
-          <TextInput
-            placeholder="Enter Team Name"
-            value={teamNameInput}
-            onChangeText={setTeamNameInput}
-            style={{
-              backgroundColor: '#f3f4f6',
-              padding: 14,
-              borderRadius: 8,
-              borderWidth: 1,
-              borderColor: '#d1d5db',
-              marginBottom: 16,
-            }}
-          />
-          <TouchableOpacity
-            onPress={handleCreateOrUpdateTeam}
-            style={{
-              backgroundColor: editingTeamId ? '#f59e0b' : '#2563eb',
-              padding: 14,
-              borderRadius: 8,
-              alignItems: 'center',
-            }}
-          >
-            <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>
-              {editingTeamId ? 'Update Team' : 'Create Team'}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Team Selection */}
-        {teams.length > 0 && (
-          <View
-            style={{
-              marginBottom: 24,
-              backgroundColor: '#ffffff',
-              padding: 20,
-              borderRadius: 12,
-              shadowColor: '#000',
-              shadowOpacity: 0.1,
-              shadowRadius: 10,
-              shadowOffset: { width: 0, height: 5 },
-              elevation: 5,
-            }}
-          >
-            <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
-              Select Team
-            </Text>
-            {teams.map((team) => (
-              <View
-                key={team.id}
-                style={{
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  marginBottom: 8,
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => setSelectedTeamId(team.id)}
-                  style={{
-                    flex: 1,
-                    backgroundColor: selectedTeamId === team.id ? '#2563eb' : '#f3f4f6',
-                    padding: 12,
-                    borderRadius: 8,
-                    marginRight: 8,
-                    alignItems: 'center',
-                  }}
-                >
-                  <Text
-                    style={{
-                      color: selectedTeamId === team.id ? '#ffffff' : '#111827',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    {team.name}
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleEditTeam(team)}
-                  style={{
-                    backgroundColor: '#10b981',
-                    padding: 8,
-                    borderRadius: 4,
-                    marginRight: 4,
-                  }}
-                >
-                  <Text style={{ color: '#fff', fontSize: 12 }}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => handleDeleteTeam(team.id)}
-                  style={{
-                    backgroundColor: '#ef4444',
-                    padding: 8,
-                    borderRadius: 4,
-                  }}
-                >
-                  <Text style={{ color: '#fff', fontSize: 12 }}>Delete</Text>
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
-        )}
-
-        {/* Player Form & List */}
-        {selectedTeam && (
-          <>
-            {/* Player Form */}
-            <View
-              style={{
-                backgroundColor: '#ffffff',
-                padding: 20,
-                borderRadius: 12,
-                shadowColor: '#000',
-                shadowOpacity: 0.1,
-                shadowRadius: 10,
-                shadowOffset: { width: 0, height: 5 },
-                elevation: 5,
-                marginBottom: 24,
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
-                {editingPlayerId ? 'Edit Player' : 'Add Player'}
+      <FlatList
+        data={selectedTeam?.players ?? []}
+        keyExtractor={(item) => item.id}
+        renderItem={renderPlayerRow}
+        ListHeaderComponent={
+          <View>
+            {/* Team Create / Edit */}
+            <View style={{ marginBottom: 20, backgroundColor: '#fff', padding: 20, borderRadius: 12 }}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 12, textAlign: 'center' }}>
+                {editingTeamId ? 'Edit Team Name' : 'Create New Team'}
               </Text>
-
               <TextInput
-                placeholder="Player Name"
-                value={playerName}
-                onChangeText={setPlayerName}
+                placeholder="Enter Team Name"
+                value={teamNameInput}
+                onChangeText={setTeamNameInput}
                 style={{
                   backgroundColor: '#f3f4f6',
                   padding: 14,
@@ -349,90 +193,144 @@ export default function TeamsScreen() {
                   borderWidth: 1,
                   borderColor: '#d1d5db',
                   marginBottom: 12,
-                }}
-              />
-              <TextInput
-                placeholder="Player Number"
-                value={playerNumber}
-                onChangeText={setPlayerNumber}
-                keyboardType="numeric"
-                style={{
-                  backgroundColor: '#f3f4f6',
-                  padding: 14,
-                  borderRadius: 8,
-                  borderWidth: 1,
-                  borderColor: '#d1d5db',
-                  marginBottom: 12,
-                }}
-              />
-              <TextInput
-                placeholder="Player ID"
-                value={playerId}
-                onChangeText={setPlayerId}
-                style={{
-                  backgroundColor: '#f3f4f6',
-                  padding: 14,
-                  borderRadius: 8,
-                  borderWidth: 1,
-                  borderColor: '#d1d5db',
-                  marginBottom: 16,
                 }}
               />
               <TouchableOpacity
-                onPress={handleAddOrUpdatePlayer}
+                onPress={handleCreateOrUpdateTeam}
                 style={{
-                  backgroundColor: editingPlayerId ? '#f59e0b' : '#2563eb',
+                  backgroundColor: editingTeamId ? '#f59e0b' : '#2563eb',
                   padding: 14,
                   borderRadius: 8,
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ color: '#ffffff', fontWeight: 'bold' }}>
-                  {editingPlayerId ? 'Update Player' : 'Add Player'}
+                <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                  {editingTeamId ? 'Update Team' : 'Create Team'}
                 </Text>
               </TouchableOpacity>
             </View>
 
-            {/* Player Table */}
-            <View
-              style={{
-                backgroundColor: '#ffffff',
-                borderRadius: 12,
-                padding: 16,
-                shadowColor: '#000',
-                shadowOpacity: 0.1,
-                shadowRadius: 10,
-                shadowOffset: { width: 0, height: 5 },
-                elevation: 5,
-              }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 16, textAlign: 'center' }}>
-                {selectedTeam.name} - Players List
-              </Text>
-
-              {selectedTeam.players.length === 0 ? (
-                <Text style={{ textAlign: 'center', color: '#6b7280' }}>
-                  No players added yet.
+            {/* Team List */}
+            {teams.length > 0 && (
+              <View style={{ backgroundColor: '#fff', padding: 20, borderRadius: 12, marginBottom: 20 }}>
+                <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 12, textAlign: 'center' }}>
+                  Select a Team
                 </Text>
-              ) : (
-                <>
-                  <View style={{ flexDirection: 'row', borderBottomWidth: 1, borderColor: '#d1d5db', paddingBottom: 8, marginBottom: 8 }}>
-                    <Text style={{ flex: 1, fontWeight: 'bold', color: '#374151' }}>Name</Text>
-                    <Text style={{ flex: 1, fontWeight: 'bold', color: '#374151' }}>Number</Text>
-                    <Text style={{ flex: 1, fontWeight: 'bold', color: '#374151' }}>ID</Text>
-                    <Text style={{ width: 80, fontWeight: 'bold', color: '#374151' }}>Actions</Text>
+                {teams.map((team) => (
+                  <View key={team.id} style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+                    <TouchableOpacity
+                      onPress={() => setSelectedTeamId(team.id)}
+                      style={{
+                        flex: 1,
+                        backgroundColor: selectedTeamId === team.id ? '#2563eb' : '#f3f4f6',
+                        padding: 12,
+                        borderRadius: 8,
+                        alignItems: 'center',
+                        marginRight: 8,
+                      }}
+                    >
+                      <Text style={{ fontWeight: 'bold', color: selectedTeamId === team.id ? '#fff' : '#111827' }}>
+                        {team.name}
+                      </Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleEditTeam(team)}
+                      style={{ backgroundColor: '#10b981', padding: 8, borderRadius: 4, marginRight: 4 }}
+                    >
+                      <Text style={{ color: '#fff', fontSize: 12 }}>Edit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => handleDeleteTeam(team.id)}
+                      style={{ backgroundColor: '#ef4444', padding: 8, borderRadius: 4 }}
+                    >
+                      <Text style={{ color: '#fff', fontSize: 12 }}>Del</Text>
+                    </TouchableOpacity>
                   </View>
-                  <FlatList
-                    data={selectedTeam.players}
-                    keyExtractor={(item) => item.id}
-                    renderItem={renderPlayerRow}
-                  />
-                </>
-              )}
-            </View>
-          </>
-        )}
-      </ScrollView>
+                ))}
+              </View>
+            )}
+
+            {/* Player Form */}
+            {selectedTeam && (
+              <View style={{ backgroundColor: '#fff', padding: 20, borderRadius: 12, marginBottom: 20 }}>
+                <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 12, textAlign: 'center' }}>
+                  {editingPlayerId ? 'Edit Player' : 'Add Player'}
+                </Text>
+                <TextInput
+                  placeholder="Player Name"
+                  value={playerName}
+                  onChangeText={setPlayerName}
+                  style={{
+                    backgroundColor: '#f3f4f6',
+                    padding: 14,
+                    borderRadius: 8,
+                    borderWidth: 1,
+                    borderColor: '#d1d5db',
+                    marginBottom: 12,
+                  }}
+                />
+                <TextInput
+                  placeholder="Player Number"
+                  value={playerNumber}
+                  onChangeText={setPlayerNumber}
+                  keyboardType="numeric"
+                  style={{
+                    backgroundColor: '#f3f4f6',
+                    padding: 14,
+                    borderRadius: 8,
+                    borderWidth: 1,
+                    borderColor: '#d1d5db',
+                    marginBottom: 12,
+                  }}
+                />
+                <TextInput
+                  placeholder="Player ID"
+                  value={playerId}
+                  onChangeText={setPlayerId}
+                  style={{
+                    backgroundColor: '#f3f4f6',
+                    padding: 14,
+                    borderRadius: 8,
+                    borderWidth: 1,
+                    borderColor: '#d1d5db',
+                    marginBottom: 16,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={handleAddOrUpdatePlayer}
+                  style={{
+                    backgroundColor: editingPlayerId ? '#f59e0b' : '#2563eb',
+                    padding: 14,
+                    borderRadius: 8,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ color: '#fff', fontWeight: 'bold' }}>
+                    {editingPlayerId ? 'Update Player' : 'Add Player'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+
+            {/* Table Header */}
+            {selectedTeam?.players.length > 0 && (
+              <View style={{ flexDirection: 'row', marginBottom: 8, borderBottomWidth: 1, borderColor: '#d1d5db', paddingBottom: 6 }}>
+                <Text style={{ flex: 1, fontWeight: 'bold', color: '#374151' }}>Name</Text>
+                <Text style={{ flex: 1, fontWeight: 'bold', color: '#374151' }}>Number</Text>
+                <Text style={{ flex: 1, fontWeight: 'bold', color: '#374151' }}>ID</Text>
+                <Text style={{ width: 80, fontWeight: 'bold', color: '#374151' }}>Actions</Text>
+              </View>
+            )}
+          </View>
+        }
+        ListEmptyComponent={
+          !selectedTeam ? (
+            <Text style={{ textAlign: 'center', color: '#6b7280', marginTop: 20 }}>
+              Create and select a team to get started.
+            </Text>
+          ) : null
+        }
+      />
     </SafeAreaView>
   );
 }

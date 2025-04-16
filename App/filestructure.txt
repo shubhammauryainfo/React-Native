@@ -25,6 +25,7 @@
         |-- react-logo@2x.png
         |-- react-logo@3x.png
         |-- splash-icon.png
+|-- bun.lock
 |-- components
     |-- Collapsible.tsx
     |-- ExternalLink.tsx
