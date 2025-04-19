@@ -38,3 +38,5 @@ yarn-error.*
 app-example
 
 android/
+
+#   java -jar bundletool.jar build-apks --bundle=filename.aab --output=newfilename.apks --mode=universal
