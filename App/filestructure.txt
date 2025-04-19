@@ -5,6 +5,132 @@
         |-- router.d.ts
     |-- web
 |-- .gitignore
+|-- android
+    |-- .gitignore
+    |-- .gradle
+        |-- 8.10.2
+            |-- checksums
+                |-- checksums.lock
+                |-- md5-checksums.bin
+                |-- sha1-checksums.bin
+            |-- dependencies-accessors
+                |-- 569c8b261a8a714d7731d5f568e0e5c05babae10
+                    |-- classes
+                        |-- org
+                            |-- gradle
+                                |-- accessors
+                                    |-- dm
+                                        |-- LibrariesForLibs$AndroidGradleLibraryAccessors.class
+                                        |-- LibrariesForLibs$AndroidLibraryAccessors.class
+                                        |-- LibrariesForLibs$BundleAccessors.class
+                                        |-- LibrariesForLibs$KotlinGradleLibraryAccessors.class
+                                        |-- LibrariesForLibs$KotlinLibraryAccessors.class
+                                        |-- LibrariesForLibs$KotlinPluginAccessors.class
+                                        |-- LibrariesForLibs$PluginAccessors.class
+                                        |-- LibrariesForLibs$VersionAccessors.class
+                                        |-- LibrariesForLibs.class
+                                        |-- LibrariesForLibsInPluginsBlock$AndroidGradleLibraryAccessors.class
+                                        |-- LibrariesForLibsInPluginsBlock$AndroidLibraryAccessors.class
+                                        |-- LibrariesForLibsInPluginsBlock$BundleAccessors.class
+                                        |-- LibrariesForLibsInPluginsBlock$KotlinGradleLibraryAccessors.class
+                                        |-- LibrariesForLibsInPluginsBlock$KotlinLibraryAccessors.class
+                                        |-- LibrariesForLibsInPluginsBlock$KotlinPluginAccessors.class
+                                        |-- LibrariesForLibsInPluginsBlock$PluginAccessors.class
+                                        |-- LibrariesForLibsInPluginsBlock$VersionAccessors.class
+                                        |-- LibrariesForLibsInPluginsBlock.class
+                    |-- metadata.bin
+                    |-- sources
+                        |-- org
+                            |-- gradle
+                                |-- accessors
+                                    |-- dm
+                                        |-- LibrariesForLibs.java
+                                        |-- LibrariesForLibsInPluginsBlock.java
+                |-- gc.properties
+            |-- expanded
+            |-- fileChanges
+                |-- last-build.bin
+            |-- fileHashes
+                |-- fileHashes.bin
+                |-- fileHashes.lock
+                |-- resourceHashesCache.bin
+            |-- gc.properties
+            |-- vcsMetadata
+        |-- buildOutputCleanup
+            |-- buildOutputCleanup.lock
+            |-- cache.properties
+        |-- noVersion
+            |-- buildLogic.lock
+        |-- vcs-1
+            |-- gc.properties
+    |-- app
+        |-- build.gradle
+        |-- debug.keystore
+        |-- proguard-rules.pro
+        |-- src
+            |-- debug
+                |-- AndroidManifest.xml
+            |-- main
+                |-- AndroidManifest.xml
+                |-- java
+                    |-- com
+                        |-- anonymous
+                            |-- App
+                                |-- MainActivity.kt
+                                |-- MainApplication.kt
+                |-- res
+                    |-- drawable
+                        |-- ic_launcher_background.xml
+                        |-- rn_edit_text_material.xml
+                    |-- drawable-hdpi
+                        |-- splashscreen_logo.png
+                    |-- drawable-mdpi
+                        |-- splashscreen_logo.png
+                    |-- drawable-xhdpi
+                        |-- splashscreen_logo.png
+                    |-- drawable-xxhdpi
+                        |-- splashscreen_logo.png
+                    |-- drawable-xxxhdpi
+                        |-- splashscreen_logo.png
+                    |-- mipmap-anydpi-v26
+                        |-- ic_launcher.xml
+                        |-- ic_launcher_round.xml
+                    |-- mipmap-hdpi
+                        |-- ic_launcher.webp
+                        |-- ic_launcher_foreground.webp
+                        |-- ic_launcher_round.webp
+                    |-- mipmap-mdpi
+                        |-- ic_launcher.webp
+                        |-- ic_launcher_foreground.webp
+                        |-- ic_launcher_round.webp
+                    |-- mipmap-xhdpi
+                        |-- ic_launcher.webp
+                        |-- ic_launcher_foreground.webp
+                        |-- ic_launcher_round.webp
+                    |-- mipmap-xxhdpi
+                        |-- ic_launcher.webp
+                        |-- ic_launcher_foreground.webp
+                        |-- ic_launcher_round.webp
+                    |-- mipmap-xxxhdpi
+                        |-- ic_launcher.webp
+                        |-- ic_launcher_foreground.webp
+                        |-- ic_launcher_round.webp
+                    |-- values
+                        |-- colors.xml
+                        |-- strings.xml
+                        |-- styles.xml
+                    |-- values-night
+                        |-- colors.xml
+    |-- build.gradle
+    |-- gradle
+        |-- wrapper
+            |-- gradle-wrapper.jar
+            |-- gradle-wrapper.properties
+    |-- gradle.properties
+    |-- gradlew
+    |-- gradlew.bat
+    |-- local.properties
+    |-- settings.gradle
 |-- app
     |-- (tabs)
         |-- greeting.tsx
@@ -20,7 +146,7 @@
     |-- images
         |-- adaptive-icon.png
         |-- favicon.png
-        |-- icon.png
+        |-- icon.jpg
         |-- partial-react-logo.png
         |-- react-logo.png
         |-- react-logo@2x.png

@@ -8,41 +8,72 @@ import {
   TextInput,
   SafeAreaView,
   Alert,
+  ScrollView,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 import { captureRef } from 'react-native-view-shot';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function GreetingScreen() {
+  const insets = useSafeAreaInsets();
+  const cardRef = useRef<View>(null);
+
   const [imageUri, setImageUri] = useState<string | null>(null);
   const [greetingTitle, setGreetingTitle] = useState('🎉 Happy Birthday! 🎂');
   const [message, setMessage] = useState('Wishing you love, laughter, and cake!');
   const [hasMediaPermission, setHasMediaPermission] = useState<boolean | null>(null);
 
-  const cardRef = useRef<View>(null);
+  const handleImagePicker = async () => {
+    Alert.alert('Select Photo', 'Choose an option', [
+      {
+        text: 'Take Photo',
+        onPress: async () => {
+          const permission = await ImagePicker.requestCameraPermissionsAsync();
+          if (!permission.granted) {
+            Alert.alert('Permission required', 'Camera permission is required.');
+            return;
+          }
 
-  const pickImage = async () => {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-    if (!permissionResult.granted) {
-      alert('Permission to access camera is required!');
-      return;
-    }
+          const result = await ImagePicker.launchCameraAsync({
+            allowsEditing: true,
+            quality: 1,
+          });
 
-    const result = await ImagePicker.launchCameraAsync({
-      allowsEditing: true,
-      quality: 1,
-    });
+          if (!result.canceled) {
+            setImageUri(result.assets[0].uri);
+          }
+        },
+      },
+      {
+        text: 'Choose from Gallery',
+        onPress: async () => {
+          const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+          if (!permission.granted) {
+            Alert.alert('Permission required', 'Gallery access is required.');
+            return;
+          }
 
-    if (!result.canceled) {
-      setImageUri(result.assets[0].uri);
-    }
+          const result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: true,
+            quality: 1,
+          });
+
+          if (!result.canceled) {
+            setImageUri(result.assets[0].uri);
+          }
+        },
+      },
+      { text: 'Cancel', style: 'cancel' },
+    ]);
   };
 
   const saveGreeting = async () => {
     const { status } = await MediaLibrary.requestPermissionsAsync();
     setHasMediaPermission(status === 'granted');
 
-    if (status !== 'granted') {
+    if (!status || status !== 'granted') {
       Alert.alert('Permission denied', 'Cannot save image without permission.');
       return;
     }
@@ -65,46 +96,65 @@ export default function GreetingScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.inner}>
-        <View ref={cardRef} collapsable={false} style={styles.card}>
-          {imageUri ? (
-            <Image source={{ uri: imageUri }} style={styles.image} />
-          ) : (
-            <View style={styles.placeholder}>
-              <Text style={styles.placeholderText}>No Photo</Text>
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: insets.bottom + 100 },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={styles.inner}>
+          {/* Greeting Card */}
+          <View ref={cardRef} collapsable={false} style={styles.card}>
+            {imageUri ? (
+              <Image source={{ uri: imageUri }} style={styles.image} />
+            ) : (
+              <View style={styles.placeholder}>
+                <Text style={styles.placeholderText}>No Photo</Text>
+              </View>
+            )}
+            <Text style={styles.greeting}>{greetingTitle}</Text>
+            <Text style={styles.customMessage}>{message}</Text>
+          </View>
+
+          {/* Editable Greeting Title */}
+          <TextInput
+            placeholder="Edit greeting title"
+            value={greetingTitle}
+            onChangeText={setGreetingTitle}
+            style={styles.input}
+          />
+
+          {/* Editable Message */}
+          <TextInput
+            placeholder="Add a custom message..."
+            value={message}
+            onChangeText={setMessage}
+            style={styles.input}
+          />
+
+          {/* Take or Choose Photo Button */}
+          <TouchableOpacity onPress={handleImagePicker} style={styles.button}>
+            <View style={styles.iconButton}>
+              <Ionicons name="camera-outline" size={20} color="#fff" style={{ marginRight: 8 }} />
+              <Text style={styles.buttonText}>
+                {imageUri ? 'Retake or Choose Photo' : 'Take or Choose Photo'}
+              </Text>
             </View>
-          )}
+          </TouchableOpacity>
 
-          <Text style={styles.greeting}>{greetingTitle}</Text>
-          <Text style={styles.customMessage}>{message}</Text>
+          {/* Download Greeting */}
+          <TouchableOpacity
+            onPress={saveGreeting}
+            style={[styles.button, { backgroundColor: '#10b981' }]}
+          >
+            <View style={styles.iconButton}>
+              <Ionicons name="download-outline" size={20} color="#fff" style={{ marginRight: 8 }} />
+              <Text style={styles.buttonText}>Download Greeting</Text>
+            </View>
+          </TouchableOpacity>
         </View>
-
-        {/* Editable Heading */}
-        <TextInput
-          placeholder="Edit greeting title"
-          value={greetingTitle}
-          onChangeText={setGreetingTitle}
-          style={styles.input}
-        />
-
-        {/* Editable Message */}
-        <TextInput
-          placeholder="Add a custom message..."
-          value={message}
-          onChangeText={setMessage}
-          style={styles.input}
-        />
-
-        <TouchableOpacity onPress={pickImage} style={styles.button}>
-          <Text style={styles.buttonText}>
-            {imageUri ? 'Retake Photo' : 'Take Photo'}
-          </Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={saveGreeting} style={[styles.button, { backgroundColor: '#10b981' }]}>
-          <Text style={styles.buttonText}>Download Greeting</Text>
-        </TouchableOpacity>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -113,11 +163,15 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fef9f3',
-    justifyContent: 'center',
+  },
+  scrollContent: {
+    paddingTop: 20,
+    paddingHorizontal: 20,
   },
   inner: {
-    padding: 20,
     alignItems: 'center',
+    maxWidth: 400,
+    alignSelf: 'center',
   },
   card: {
     backgroundColor: '#fff',
@@ -128,8 +182,8 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOpacity: 0.1,
     shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
     width: '100%',
-    maxWidth: 350,
     marginBottom: 24,
   },
   image: {
@@ -155,7 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: '#d97706',
-    marginBottom: 8,
+    marginBottom: 6,
     textAlign: 'center',
   },
   customMessage: {
@@ -166,23 +220,27 @@ const styles = StyleSheet.create({
   },
   input: {
     width: '100%',
-    maxWidth: 350,
     backgroundColor: '#f3f4f6',
-    padding: 12,
-    borderRadius: 8,
+    padding: 14,
+    borderRadius: 10,
     borderColor: '#d1d5db',
     borderWidth: 1,
     marginBottom: 16,
+    fontSize: 16,
   },
   button: {
     backgroundColor: '#2563eb',
     paddingVertical: 14,
     paddingHorizontal: 32,
-    borderRadius: 8,
-    marginBottom: 12,
+    borderRadius: 10,
+    marginBottom: 16,
     width: '100%',
-    maxWidth: 350,
     alignItems: 'center',
+  },
+  iconButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     color: '#fff',
