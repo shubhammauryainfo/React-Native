@@ -1,0 +1,11 @@
+|-- .env
+|-- .gitignore
+|-- bun.lockb
+|-- controllers
+    |-- teamController.js
+|-- models
+    |-- Team.js
+|-- package.json
+|-- routes
+    |-- teamRoutes.js
+|-- server.js

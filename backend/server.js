@@ -11,7 +11,7 @@ const app = express();
 const apiKeys = [process.env.API_KEY];
 
 const apiKeyMiddleware = (req, res, next) => {
-  const apiKey = req.headers["api-key"]; // Get API key from request headers api key Shubham Maurya
+  const apiKey = req.headers["auth-key"]; // Get API key from request headers api key Shubham Maurya
 
   if (!apiKey || !apiKeys.includes(apiKey)) {
     return res.status(403).json({
@@ -25,9 +25,9 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "api-key"],
+    allowedHeaders: ["Content-Type", "Authorization", "auth-key"],
   })
 );
 
@@ -37,11 +37,16 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
+
 // Basic route to test server
 app.use("/api", apiKeyMiddleware);
 app.get("/api/hii", (req, res) => {
   res.send("API is running... develop by shubham ");
 });
+const teamRoutes = require('./routes/teamRoutes');
+app.use('/api/teams', teamRoutes);
+
+
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
