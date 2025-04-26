@@ -1,4 +1,5 @@
 |-- App
+    |-- .env
     |-- .expo
         |-- devices.json
         |-- README.md
@@ -8,6 +9,7 @@
     |-- .gitignore
     |-- app
         |-- (tabs)
+            |-- greeting.tsx
             |-- index.tsx
             |-- players.tsx
             |-- _layout.tsx
@@ -20,17 +22,17 @@
         |-- images
             |-- adaptive-icon.png
             |-- favicon.png
-            |-- icon.png
+            |-- icon.jpg
             |-- partial-react-logo.png
             |-- react-logo.png
             |-- react-logo@2x.png
             |-- react-logo@3x.png
             |-- splash-icon.png
+    |-- bun.lock
     |-- components
         |-- Collapsible.tsx
         |-- ExternalLink.tsx
         |-- HapticTab.tsx
-        |-- HelloWave.tsx
         |-- ParallaxScrollView.tsx
         |-- ThemedText.tsx
         |-- ThemedView.tsx
@@ -45,6 +47,7 @@
                 |-- ThemedText-test.tsx.snap
     |-- constants
         |-- Colors.ts
+    |-- eas.json
     |-- expo-env.d.ts
     |-- hooks
         |-- useColorScheme.ts
@@ -61,7 +64,10 @@
     |-- .gitignore
     |-- bun.lockb
     |-- controllers
+        |-- teamController.js
     |-- models
+        |-- Team.js
     |-- package.json
     |-- routes
+        |-- teamRoutes.js
     |-- server.js
