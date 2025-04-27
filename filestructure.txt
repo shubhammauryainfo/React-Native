@@ -12,6 +12,7 @@
             |-- greeting.tsx
             |-- index.tsx
             |-- players.tsx
+            |-- xyz.tsx
             |-- _layout.tsx
         |-- +not-found.tsx
         |-- _layout.tsx
