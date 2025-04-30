@@ -8,7 +8,6 @@
 |-- .gitignore
 |-- app
     |-- (tabs)
-        |-- gallery.tsx
         |-- greeting.tsx
         |-- index.tsx
         |-- players.tsx
