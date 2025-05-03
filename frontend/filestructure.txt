@@ -11,6 +11,8 @@
         |-- index.tsx
         |-- _layout.tsx
     |-- +not-found.tsx
+    |-- auth
+        |-- login.tsx
     |-- _layout.tsx
 |-- app.json
 |-- assets
@@ -41,6 +43,8 @@
         |-- TabBarBackground.tsx
 |-- constants
     |-- Colors.ts
+|-- context
+    |-- AuthContext.tsx
 |-- eslint.config.js
 |-- expo-env.d.ts
 |-- hooks
