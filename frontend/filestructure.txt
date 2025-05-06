@@ -11,8 +11,6 @@
         |-- index.tsx
         |-- _layout.tsx
     |-- +not-found.tsx
-    |-- auth
-        |-- login.tsx
     |-- _layout.tsx
 |-- app.json
 |-- assets
