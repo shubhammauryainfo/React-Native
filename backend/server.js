@@ -11,7 +11,7 @@ const app = express();
 const apiKeys = [process.env.API_KEY];
 
 const apiKeyMiddleware = (req, res, next) => {
-  const apiKey = req.headers["auth-key"]; 
+  const apiKey = req.headers["auth-key"];
 
   if (!apiKey || !apiKeys.includes(apiKey)) {
     return res.status(403).json({
@@ -39,9 +39,12 @@ mongoose
 
 // Basic route to test server
 app.use("/api", apiKeyMiddleware);
-app.get("/api/hii", (req, res) => {
-  res.send("API is running... develop by shubham ");
-});
+const authRoutes = require("./routes/authRoutes");
+app.use("/api/auth", authRoutes);
+const chatRoutes = require("./routes/chatRoutes");
+app.use("/api/chat", chatRoutes);
+const messageRoutes = require("./routes/messageRoutes");
+app.use("/api/message", messageRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
