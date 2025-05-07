@@ -13,19 +13,21 @@ exports.sendMessage = async (req, res) => {
 
   try {
     const message = await Message.create({
-      chat: chatId,
-      sender: senderId,
+      chatId,
+      senderId,
       text,
     });
 
     // Optional: update chat's updatedAt
     await Chat.findByIdAndUpdate(chatId, { updatedAt: new Date() });
 
-    const populatedMessage = await message
-      .populate("sender", "-password")
-      .execPopulate();
+    // Populate fields separately
+    await message.populate([
+      { path: "senderId", select: "-password" },
+      { path: "chatId" },
+    ]);
 
-    res.status(201).json(populatedMessage);
+    res.status(201).json(message);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -36,8 +38,9 @@ exports.getMessages = async (req, res) => {
   const { chatId } = req.params;
 
   try {
-    const messages = await Message.find({ chat: chatId })
-      .populate("sender", "-password")
+    const messages = await Message.find({ chatId })
+      .populate("senderId", "-password")
+      .populate("chatId")
       .sort({ createdAt: 1 });
 
     res.status(200).json(messages);
@@ -53,10 +56,17 @@ exports.updateMessage = async (req, res) => {
 
   try {
     const message = await Message.findById(messageId);
-    if (!message) return res.status(404).json({ message: "Message not found" });
+    if (!message) {
+      return res.status(404).json({ message: "Message not found" });
+    }
 
     message.text = text || message.text;
     await message.save();
+
+    await message.populate([
+      { path: "senderId", select: "-password" },
+      { path: "chatId" },
+    ]);
 
     res.status(200).json(message);
   } catch (err) {
@@ -70,7 +80,9 @@ exports.deleteMessage = async (req, res) => {
 
   try {
     const message = await Message.findByIdAndDelete(messageId);
-    if (!message) return res.status(404).json({ message: "Message not found" });
+    if (!message) {
+      return res.status(404).json({ message: "Message not found" });
+    }
 
     res.status(200).json({ message: "Message deleted" });
   } catch (err) {
