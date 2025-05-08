@@ -3,6 +3,10 @@
     "name": "frontend",
     "slug": "frontend",
     "version": "1.0.0",
+    "extra": {
+      "API_URL": "https://your-backend.com/api",
+      "API_KEY": "your-api-key-here"
+    },
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "frontend",

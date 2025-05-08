@@ -1,3 +1,4 @@
+|-- .env
 |-- .expo
     |-- devices.json
     |-- README.md
@@ -11,6 +12,9 @@
         |-- index.tsx
         |-- _layout.tsx
     |-- +not-found.tsx
+    |-- auth
+        |-- login.tsx
+        |-- register.tsx
     |-- _layout.tsx
 |-- app.json
 |-- assets
@@ -25,6 +29,7 @@
         |-- react-logo@2x.png
         |-- react-logo@3x.png
         |-- splash-icon.png
+|-- babel.config.js
 |-- bun.lock
 |-- components
     |-- Collapsible.tsx
@@ -39,6 +44,8 @@
         |-- IconSymbol.tsx
         |-- TabBarBackground.ios.tsx
         |-- TabBarBackground.tsx
+|-- config
+    |-- env.ts
 |-- constants
     |-- Colors.ts
 |-- context
@@ -49,9 +56,12 @@
     |-- useColorScheme.ts
     |-- useColorScheme.web.ts
     |-- useThemeColor.ts
+|-- lib
+    |-- api.ts
 |-- package-lock.json
 |-- package.json
 |-- README.md
 |-- scripts
     |-- reset-project.js
+|-- tailwind.config.js
 |-- tsconfig.json
