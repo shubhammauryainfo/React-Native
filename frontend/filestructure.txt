@@ -1,0 +1,44 @@
+|-- .expo
+    |-- packager-info.json
+    |-- README.md
+    |-- settings.json
+|-- .gitignore
+|-- app
+    |-- (tabs)
+        |-- index.tsx
+        |-- two.tsx
+        |-- _layout.tsx
+    |-- +html.tsx
+    |-- +not-found.tsx
+    |-- modal.tsx
+    |-- _layout.tsx
+|-- app.json
+|-- assets
+    |-- fonts
+        |-- SpaceMono-Regular.ttf
+    |-- images
+        |-- adaptive-icon.png
+        |-- favicon.png
+        |-- icon.png
+        |-- splash-icon.png
+|-- babel.config.js
+|-- bun.lock
+|-- components
+    |-- EditScreenInfo.tsx
+    |-- ExternalLink.tsx
+    |-- StyledText.tsx
+    |-- Themed.tsx
+    |-- useClientOnlyValue.ts
+    |-- useClientOnlyValue.web.ts
+    |-- useColorScheme.ts
+    |-- useColorScheme.web.ts
+    |-- __tests__
+        |-- StyledText-test.js
+|-- constants
+    |-- Colors.ts
+|-- desktop.ini
+|-- expo-env.d.ts
+|-- package-lock.json
+|-- package.json
+|-- tailwind.config.js
+|-- tsconfig.json
