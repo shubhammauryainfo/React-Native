@@ -3,6 +3,8 @@
     |-- README.md
 |-- .gitignore
 |-- app
+    |-- ChatListScreen.tsx
+    |-- ChatScreen.tsx
     |-- LoginScreen.tsx
     |-- RegisterScreen.tsx
 |-- app.json

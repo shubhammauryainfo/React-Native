@@ -2,6 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './app/LoginScreen';
+import ChatListScreen from './app/ChatListScreen'
+import ChatScreen from './app/ChatScreen'
 import RegisterScreen from './app/RegisterScreen';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { View, Text, Button } from 'react-native';
@@ -25,7 +27,10 @@ const AppNavigator = () => {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         {user ? (
-          <Stack.Screen name="Home" component={HomeScreen} />
+          <>
+         <Stack.Screen name="Chats" component={ChatListScreen} />
+         <Stack.Screen name="ChatScreen" component={ChatScreen} />
+         </>
         ) : (
           <>
             <Stack.Screen name="Login" component={LoginScreen} />
