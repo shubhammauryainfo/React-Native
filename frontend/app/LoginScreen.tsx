@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { API_URL, API_KEY } from '@env';
 import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 

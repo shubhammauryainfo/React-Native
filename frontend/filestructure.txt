@@ -1,3 +1,4 @@
+|-- .env
 |-- .expo
     |-- devices.json
     |-- README.md
@@ -14,8 +15,10 @@
     |-- favicon.png
     |-- icon.png
     |-- splash-icon.png
+|-- babel.config.js
 |-- context
     |-- AuthContext.tsx
+|-- env.d.ts
 |-- index.ts
 |-- lib
     |-- api.ts
