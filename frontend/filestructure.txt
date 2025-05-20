@@ -6,6 +6,7 @@
 |-- app
     |-- ChatListScreen.tsx
     |-- ChatScreen.tsx
+    |-- HomeScreen.tsx
     |-- LoginScreen.tsx
     |-- RegisterScreen.tsx
 |-- app.json

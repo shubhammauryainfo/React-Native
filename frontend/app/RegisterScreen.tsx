@@ -7,44 +7,43 @@ import {
   TouchableOpacity,
   Alert,
 } from 'react-native';
-import { API_URL , API_KEY } from '@env'; // Make sure @env is configured correctly
+import axios from 'axios';
+import { API_URL, API_KEY } from '@env'; // Adjust path as needed
 
 export default function RegisterScreen({ navigation }: any) {
-  const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
 
   const handleRegister = async () => {
-    if (!email || !name || !password) {
+    if (!name || !email || !password || !phone) {
       Alert.alert('Error', 'Please fill in all fields');
       return;
     }
 
     try {
-      setLoading(true);
-
-      const res = await fetch(`${API_URL}/users/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-key': API_KEY ?? '', // Optional: Add auth-key header if needed
+      const response = await axios.post(
+        `${API_URL}/users/register`,
+        {
+          name,
+          email,
+          phone,
+          password,
         },
-        body: JSON.stringify({ name, email, password }),
-      });
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'auth-key': API_KEY,
+          },
+        }
+      );
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.message || 'Registration failed');
-      }
-
-      Alert.alert('Success', 'Registration successful');
+      Alert.alert('Success', 'Account created successfully');
       navigation.navigate('Login');
-    } catch (err: any) {
-      Alert.alert('Error', err.message);
-    } finally {
-      setLoading(false);
+    } catch (error: any) {
+      console.error(error.response?.data || error.message);
+      Alert.alert('Error', error.response?.data?.message || 'Registration failed');
     }
   };
 
@@ -52,12 +51,14 @@ export default function RegisterScreen({ navigation }: any) {
     <View style={styles.container}>
       <Text style={styles.title}>Create an Account</Text>
       <Text style={styles.subtitle}>Join us today!</Text>
+
       <TextInput
         placeholder="Name"
         style={styles.input}
         value={name}
         onChangeText={setName}
       />
+
       <TextInput
         placeholder="Email"
         style={styles.input}
@@ -66,6 +67,15 @@ export default function RegisterScreen({ navigation }: any) {
         keyboardType="email-address"
         autoCapitalize="none"
       />
+
+      <TextInput
+        placeholder="Phone Number"
+        style={styles.input}
+        value={phone}
+        onChangeText={setPhone}
+        keyboardType="phone-pad"
+      />
+
       <TextInput
         placeholder="Password"
         style={styles.input}
@@ -73,20 +83,17 @@ export default function RegisterScreen({ navigation }: any) {
         value={password}
         onChangeText={setPassword}
       />
-      <TouchableOpacity
-        style={[styles.button, loading && { opacity: 0.6 }]}
-        onPress={handleRegister}
-        disabled={loading}
-      >
-        <Text style={styles.buttonText}>{loading ? 'Registering...' : 'Register'}</Text>
+
+      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+        <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
+
       <TouchableOpacity onPress={() => navigation.navigate('Login')}>
         <Text style={styles.loginText}>Already have an account? Login</Text>
       </TouchableOpacity>
     </View>
   );
 }
-
 
 const styles = StyleSheet.create({
   container: {
